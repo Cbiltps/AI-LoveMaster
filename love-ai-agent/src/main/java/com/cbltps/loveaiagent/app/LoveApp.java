@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
+import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
@@ -100,8 +101,8 @@ public class LoveApp {
     @Resource
     private VectorStore vectorStore;
 
-//    @Resource
-//    private Advisor loveAppRagCloudAdvisor;
+    @Resource
+    private Advisor ragCloudAdvisor;
 
     /**
      * 和 RAG 知识库进行对话
@@ -119,8 +120,8 @@ public class LoveApp {
                 .advisors(new MyLoggerAdvisor())
                 // 应用 RAG 知识库问答
                 .advisors(new QuestionAnswerAdvisor(vectorStore))
-                // 应用 RAG 检索增强服务(基于云知识库服务)
-//                .advisors(loveAppRagCloudAdvisor)
+                // todo 应用 RAG 检索增强服务(基于云知识库服务), 注意 advisors 未测试
+//                .advisors(ragCloudAdvisor)
                 .call()
                 .chatResponse();
         String content = chatResponse.getResult().getOutput().getText();
