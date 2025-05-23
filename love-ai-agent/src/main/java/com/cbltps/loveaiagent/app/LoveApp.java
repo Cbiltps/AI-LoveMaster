@@ -99,10 +99,13 @@ public class LoveApp {
     // AI 恋爱知识库问答功能
 
     @Resource
-    private VectorStore vectorStore;
+    private VectorStore loveVectorStore;
+
+//    @Resource
+//    private Advisor ragCloudAdvisor;
 
     @Resource
-    private Advisor ragCloudAdvisor;
+    private VectorStore pgVectorStore;
 
     /**
      * 和 RAG 知识库进行对话
@@ -119,9 +122,11 @@ public class LoveApp {
                 // 开启日志，便于观察效果
                 .advisors(new MyLoggerAdvisor())
                 // 应用 RAG 知识库问答
-                .advisors(new QuestionAnswerAdvisor(vectorStore))
+                .advisors(new QuestionAnswerAdvisor(loveVectorStore))
                 // todo 应用 RAG 检索增强服务(基于云知识库服务), 注意 advisors 未测试
 //                .advisors(ragCloudAdvisor)
+                // todo 应用 RAG 检索增强服务(基于 PgVector 向量存储), 注意 advisors 未测试
+//                .advisors(new QuestionAnswerAdvisor(pgVectorStore))
                 .call()
                 .chatResponse();
         String content = chatResponse.getResult().getOutput().getText();

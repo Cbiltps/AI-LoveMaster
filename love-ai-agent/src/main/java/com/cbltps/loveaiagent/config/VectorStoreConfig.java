@@ -1,6 +1,8 @@
 package com.cbltps.loveaiagent.config;
 
 import com.cbltps.loveaiagent.rag.LoveDocumentLoader;
+import com.cbltps.loveaiagent.rag.MyKeywordEnricher;
+import com.cbltps.loveaiagent.rag.MyTokenTextSplitter;
 import jakarta.annotation.Resource;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.embedding.EmbeddingModel;
@@ -24,11 +26,22 @@ public class VectorStoreConfig {
     @Resource
     private LoveDocumentLoader loveDocumentLoader;
 
+    @Resource
+    private MyTokenTextSplitter myTokenTextSplitter;
+
+    @Resource
+    private MyKeywordEnricher myKeywordEnricher;
+
     @Bean
-    public VectorStore vectorStore(@Qualifier("dashscopeEmbeddingModel") EmbeddingModel embeddingModel) {
+    public VectorStore loveVectorStore(@Qualifier("dashscopeEmbeddingModel") EmbeddingModel embeddingModel) {
         SimpleVectorStore simpleVectorStore = SimpleVectorStore.builder(embeddingModel).build();
+        // 加载文档
         List<Document> documents = loveDocumentLoader.loadDocumentsInMd();
-        simpleVectorStore.add(documents);
+        // 分割文档
+//        List<Document> splitDocuments = myTokenTextSplitter.splitCustomized(documents);
+        // 自动补充关键词元信息
+        List<Document> enrichedDocuments = myKeywordEnricher.enrichDocuments(documents);
+        simpleVectorStore.add(enrichedDocuments);
         return simpleVectorStore;
     }
 }

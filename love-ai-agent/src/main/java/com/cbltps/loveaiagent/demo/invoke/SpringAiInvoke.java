@@ -11,7 +11,7 @@ import org.springframework.boot.CommandLineRunner;
  */
 // 取消注释后，项目启动时会执行
 //@Component
-public class SpringAiAiInvoke implements CommandLineRunner {
+public class SpringAiInvoke implements CommandLineRunner {
 
     @Resource
     private ChatModel dashscopeChatModel;
