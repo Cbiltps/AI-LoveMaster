@@ -14,6 +14,7 @@ import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.tool.ToolCallback;
+import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Component;
 
@@ -80,7 +81,7 @@ public class LoveApp {
     }
 
     /**
-     * AI 恋爱报告功能（实战结构化输出）
+     * AI 恋爱报告功能(实战结构化输出)
      * @param message
      * @param chatId
      * @return
@@ -136,7 +137,7 @@ public class LoveApp {
                 // todo 应用 RAG 检索增强服务(基于 PgVector 向量存储), 注意 advisors 未测试
 //                .advisors(new QuestionAnswerAdvisor(pgVectorStore))
                 // 应用自定义的 RAG 检索增强服务(文档查询器 + 上下文增强器)
-                .advisors(CustomAdvisorFactory.createCustomAdvisor(loveVectorStore, "单身"))
+//                .advisors(CustomAdvisorFactory.createCustomAdvisor(loveVectorStore, "单身"))
                 .call()
                 .chatResponse();
         String content = chatResponse.getResult().getOutput().getText();
@@ -171,4 +172,36 @@ public class LoveApp {
         log.info("content: {}", content);
         return content;
     }
+
+    /**
+     * AI 调用 MCP 服务,
+     * 之前写了一些配置文件, 注明了需要调用那些MCP服务,
+     * 项目启动的时候, Spring_AI_MCP 的包会帮我们把MCP所有的工具全部整合到 provider 中,
+     * 然后我们就可以直接把 provider 提交给 client 来调用MCP服务了
+     */
+//    @Resource
+//    private ToolCallbackProvider toolCallbackProvider;
+//
+//    /**
+//     * AI 恋爱报告功能(调用 MCP 服务)
+//     * todo 注意: MCP 服务未测试
+//     * @param message
+//     * @param chatId
+//     * @return
+//     */
+//    public String doChatWithMcp(String message, String chatId) {
+//        ChatResponse chatResponse = chatClient
+//                .prompt()
+//                .user(message)
+//                .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
+//                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
+//                // 开启日志，便于观察效果
+//                .advisors(new MyLoggerAdvisor())
+//                .tools(toolCallbackProvider)
+//                .call()
+//                .chatResponse();
+//        String content = chatResponse.getResult().getOutput().getText();
+//        log.info("content: {}", content);
+//        return content;
+//    }
 }
