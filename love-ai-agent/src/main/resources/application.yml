@@ -33,12 +33,22 @@ springdoc:
   group-configs:
     - group: 'default'
       paths-to-match: '/**'
-      packages-to-scan: com.cp.loveaiagent.controller
+      packages-to-scan: com.cbltps.loveaiagent.controller
 # knife4j config
 knife4j:
   enable: true
   setting:
     language: zh_cn
+#knife4j:
+#  enable: true
+#  openapi:
+#    title: "接口文档"
+#    version: 1.0
+#    group:
+#      default:
+#        api-rule: package
+#        api-rule-res.   ources:
+#          - com.cbiltps.loveaiagent.controller
 # searchAPI
 search-api:
   api-key: 你的 API Key

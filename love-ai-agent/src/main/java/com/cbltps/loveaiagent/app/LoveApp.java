@@ -17,6 +17,7 @@ import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 
@@ -57,7 +58,7 @@ public class LoveApp {
     }
 
     /**
-     * AI 基础对话（支持多轮对话记忆）
+     * AI 基础对话(支持多轮对话记忆)
      * @param message
      * @param chatId
      * @return
@@ -73,6 +74,36 @@ public class LoveApp {
         String content = chatResponse.getResult().getOutput().getText();
         log.info("content: {}", content);
         return content;
+    }
+
+    /**
+     * AI 基础对话(支持多轮对话记忆-流式传输)
+     * @param message
+     * @param chatId
+     * @return
+     */
+//    public Flux<String> doChatByStream(String message, String chatId) {
+//        Flux<String> fluxContent = chatClient
+//                .prompt()
+//                .user(message)
+//                .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
+//                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
+//                .stream()
+//                .content();
+//        /**
+//         * subscribe 就是监听一个响应式对象, 当响应式对象有了新的值就可以用日志输出它
+//         */
+////        fluxContent.subscribe(content -> log.info("content: {}", content));
+//        return fluxContent;
+//    }
+    public Flux<String> doChatByStream(String message, String chatId) {
+        return chatClient
+                .prompt()
+                .user(message)
+                .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
+                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
+                .stream()
+                .content();
     }
 
     // 定义恋爱报告的类

@@ -35,7 +35,7 @@ public class PDFGenerationTool {
             try (PdfWriter writer = new PdfWriter(filePath);
                  PdfDocument pdf = new PdfDocument(writer);
                  Document document = new Document(pdf)) {
-                // 自定义字体（需要人工下载字体文件到特定目录）
+                // 自定义字体(需要人工下载字体文件到特定目录)
 //                String fontPath = Paths.get("src/main/resources/static/fonts/simsun.ttf")
 //                        .toAbsolutePath().toString();
 //                PdfFont font = PdfFontFactory.createFont(fontPath,
