@@ -14,7 +14,7 @@ spring:
       client:
         sse:
           connections:
-            server1:
+            server:
               url: http://localhost:8127
 #        stdio:
 #          servers-configuration: classpath:mcp-servers.json
