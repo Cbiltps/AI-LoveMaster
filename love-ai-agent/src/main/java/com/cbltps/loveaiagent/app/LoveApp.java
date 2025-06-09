@@ -210,29 +210,28 @@ public class LoveApp {
      * 项目启动的时候, Spring_AI_MCP 的包会帮我们把MCP所有的工具全部整合到 provider 中,
      * 然后我们就可以直接把 provider 提交给 client 来调用MCP服务了
      */
-//    @Resource
-//    private ToolCallbackProvider toolCallbackProvider;
-//
-//    /**
-//     * AI 恋爱报告功能(调用 MCP 服务)
-//     * todo 注意: MCP 服务未测试
-//     * @param message
-//     * @param chatId
-//     * @return
-//     */
-//    public String doChatWithMcp(String message, String chatId) {
-//        ChatResponse chatResponse = chatClient
-//                .prompt()
-//                .user(message)
-//                .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
-//                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
-//                // 开启日志，便于观察效果
-//                .advisors(new MyLoggerAdvisor())
-//                .tools(toolCallbackProvider)
-//                .call()
-//                .chatResponse();
-//        String content = chatResponse.getResult().getOutput().getText();
-//        log.info("content: {}", content);
-//        return content;
-//    }
+    @Resource
+    private ToolCallbackProvider toolCallbackProvider;
+
+    /**
+     * AI 恋爱报告功能(调用 MCP 服务)
+     * @param message
+     * @param chatId
+     * @return
+     */
+    public String doChatWithMcp(String message, String chatId) {
+        ChatResponse chatResponse = chatClient
+                .prompt()
+                .user(message)
+                .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
+                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
+                // 开启日志，便于观察效果
+                .advisors(new MyLoggerAdvisor())
+                .tools(toolCallbackProvider)
+                .call()
+                .chatResponse();
+        String content = chatResponse.getResult().getOutput().getText();
+        log.info("content: {}", content);
+        return content;
+    }
 }

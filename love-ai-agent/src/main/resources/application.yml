@@ -16,8 +16,8 @@ spring:
           connections:
             server1:
               url: http://localhost:8127
-    #        stdio:
-    #          servers-configuration: classpath:mcp-servers.json
+#        stdio:
+#          servers-configuration: classpath:mcp-servers.json
 server:
   port: 8123
   servlet:
